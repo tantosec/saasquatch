@@ -1,0 +1,17 @@
+version: 1
+rules:
+  - name: Jira Subdomain
+    service: Jira
+    tags:
+      - project-management
+      - dev
+      - collaboration
+    known_good: acgisoftware
+    request:
+      method: GET
+      path: IDENTIFIER.jira.com
+      port: 443
+      protocol: https
+    detection:
+      match: { header: { Location: ["https://IDENTIFIER.jira.com/login.jsp"] } }
+    condition: match

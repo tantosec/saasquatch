@@ -1,0 +1,23 @@
+version: 1
+rules:
+  - name: Microsoft 365 Realm
+    service: Microsoft 365
+    tags:
+      - full-domain
+      - idp
+      - email
+    known_good: microsoft.com
+    request:
+      method: GET
+      path: login.microsoftonline.com/getuserrealm.srf?login=user@IDENTIFIER&xml=1
+      port: 443
+      protocol: https
+    detection:
+      managed: { body: ["<NameSpaceType>(Managed|Federated)</NameSpaceType>"] }
+    condition: managed
+    captures:
+      namespace_type: { regex: '<NameSpaceType>(.+?)</NameSpaceType>' }
+      domain:         { regex: '<DomainName>(.+?)</DomainName>' }
+      is_federated:   { regex: '<IsFederatedNS>(.+?)</IsFederatedNS>' }
+      brand:          { regex: '<FederationBrandName>(.+?)</FederationBrandName>' }
+      cloud:          { regex: '<CloudInstanceName>(.+?)</CloudInstanceName>' }

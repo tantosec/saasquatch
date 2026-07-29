@@ -1,0 +1,19 @@
+version: 1
+rules:
+  - name: SERVICE - CHECK_TYPE
+    service: SERVICE
+    tags:
+      - category1
+      - category2
+    known_good: valid-identifier
+    request:
+      method: GET
+      protocol: https
+      path: IDENTIFIER.service.com
+    detection:
+      # A leaf sets exactly one of: status / body / header
+      match: { status: [200] }
+      # match: { body: ["regex-pattern-here"] }
+      # match: { header: { Location: ["https://IDENTIFIER.service.com/login"] } }
+    condition: match
+    # condition: not match   # succeed when the leaf does NOT match

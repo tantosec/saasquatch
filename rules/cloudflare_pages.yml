@@ -1,0 +1,31 @@
+version: 1
+rules:
+  - name: "Cloudflare Pages - Subdomain"
+    service: "Cloudflare Pages"
+    tags:
+      - "dev"
+      - "cloud"
+    known_good: "places"
+    request:
+      method: "GET"
+      protocol: "https"
+      path: "IDENTIFIER.pages.dev"
+    detection:
+      match: { status: [200] }
+    condition: match
+
+  - name: "Cloudflare Pages - Subdomain behind Cloudflare Access"
+    service: "Cloudflare Pages"
+    tags:
+      - "dev"
+      - "cloud"
+    known_good: "opaque"
+    request:
+      method: "GET"
+      protocol: "https"
+      path: "IDENTIFIER.pages.dev"
+    detection:
+      match: { header: { Location: ["https://.*.cloudflareaccess.com"] } }
+    condition: match
+    captures:
+      access_team: { regex: 'Location: (https://\S+\.cloudflareaccess\.com)' }

@@ -1,0 +1,31 @@
+version: 1
+rules:
+  - name: AWS S3 Bucket - Subdomain General
+    service: AWS S3 Bucket
+    tags:
+      - cloud
+      - dev
+      - storage
+    known_good: happiness-report
+    request:
+      method: GET
+      protocol: https
+      path: IDENTIFIER.s3.amazonaws.com
+    detection:
+      no_such_bucket: { body: ["<Code>NoSuchBucket</Code>"] }
+    condition: not no_such_bucket
+
+  - name: AWS S3 Bucket - Subdomain Access Denied
+    service: AWS S3 Bucket
+    tags:
+      - cloud
+      - dev
+      - storage
+    known_good: happiness-report
+    request:
+      method: GET
+      protocol: https
+      path: IDENTIFIER.s3.amazonaws.com
+    detection:
+      match: { body: ["<Code>AccessDenied</Code>"] }
+    condition: match

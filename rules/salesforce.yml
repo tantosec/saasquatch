@@ -1,0 +1,32 @@
+version: 1
+rules:
+  - name: Salesforce MY - Subdomain
+    service: Salesforce
+    tags:
+      - crm
+      - finance
+    known_good: vmware
+    request:
+      method: GET
+      path: IDENTIFIER.my.salesforce.com
+      port: 443
+      protocol: https
+    detection:
+      match: { body: ["<title>Login | Salesforce</title>"] }
+    condition: match
+
+  - name: Salesforce LIGHTNING - Subdomain
+    service: Salesforce
+    tags:
+      - crm
+      - dev
+      - finance
+    known_good: vmware
+    request:
+      method: GET
+      path: IDENTIFIER.lightning.force.com/lightning/o/IDENTIFIER/list
+      port: 443
+      protocol: https
+    detection:
+      match: { header: { Location: ["https://IDENTIFIER.my.salesforce.com/visualforce/session"] } }
+    condition: match

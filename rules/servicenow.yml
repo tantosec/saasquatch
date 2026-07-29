@@ -1,0 +1,17 @@
+version: 1
+rules:
+  - name: Servicenow Subdomain
+    service: Servicenow
+    tags:
+      - support
+      - security
+      - dev
+    known_good: lonestar
+    request:
+      method: GET
+      path: IDENTIFIER.service-now.com
+      port: 443
+      protocol: https
+    detection:
+      match: { status: [302] }
+    condition: match

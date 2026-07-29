@@ -1,0 +1,18 @@
+version: 1
+rules:
+  - name: Atlassian Subdomain
+    service: atlassian
+    tags:
+      - project-management
+      - dev
+      - collaboration
+    known_good: spotify
+    request:
+      method: GET
+      path: IDENTIFIER.atlassian.net
+      port: 443
+      protocol: https
+    detection:
+      redirected: { status: [302] }
+      has_location: { header: { Location: ["."] } }
+    condition: redirected and has_location

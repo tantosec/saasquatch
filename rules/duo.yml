@@ -1,0 +1,17 @@
+version: 1
+rules:
+  - name: Duo Security
+    service: Duo
+    tags:
+      - dev
+      - idp
+      - security
+    known_good: asd
+    request:
+      method: GET
+      path: IDENTIFIER.login.duosecurity.com
+      port: 443
+      protocol: https
+    detection:
+      match: { status: [301] }
+    condition: match

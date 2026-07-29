@@ -1,0 +1,17 @@
+version: 1
+rules:
+  - name: Sharepoint Subdomain
+    service: sharepoint
+    tags:
+      - dev
+      - collaboration
+      - storage
+    known_good: pennstateoffice365-my
+    request:
+      method: GET
+      path: IDENTIFIER.sharepoint.com
+      port: 443
+      protocol: https
+    detection:
+      match: { header: { Location: ["https://IDENTIFIER.sharepoint.com/_layouts/15/Authenticate.aspx"] } }
+    condition: match

@@ -1,0 +1,46 @@
+version: 1
+rules:
+  - name: Slack - Subdomain
+    service: Slack
+    tags:
+      - collaboration
+      - communication
+    known_good: medium
+    request:
+      method: GET
+      path: IDENTIFIER.slack.com
+      port: 443
+      protocol: https
+    detection:
+      match: { body: ['Sign in to IDENTIFIER.slack.com'] }
+    condition: match
+
+  - name: Slack Enterprise - Subdomain
+    service: Slack
+    tags:
+      - collaboration
+      - communication
+    known_good: ibm
+    request:
+      method: GET
+      path: IDENTIFIER.slack.com
+      port: 443
+      protocol: https
+    detection:
+      match: { header: { Location: ['https://IDENTIFIER.enterprise.slack.com'] } }
+    condition: match
+
+  - name: Slack Public - Subdomain
+    service: Slack
+    tags:
+      - collaboration
+      - communication
+    known_good: kentico-community
+    request:
+      method: GET
+      path: IDENTIFIER.slack.com
+      port: 443
+      protocol: https
+    detection:
+      match: { body: ['https:\\/\\/IDENTIFIER.slack.com\\/workspace-signin\\/oauth\\/google\\/start'] }
+    condition: match

@@ -1,0 +1,33 @@
+version: 1
+rules:
+  - name: GitHub Organization
+    service: GitHub
+    tags:
+      - dev
+      - vcs
+      - ci-cd
+    known_good: google
+    request:
+      method: GET
+      path: github.com/orgs/IDENTIFIER
+      port: 443
+      protocol: https
+    detection:
+      match: { header: { Location: ["https://github.com/IDENTIFIER"] } }
+    condition: match
+
+  - name: GitHub Basic
+    service: GitHub
+    tags:
+      - dev
+      - vcs
+      - ci-cd
+    known_good: haberman
+    request:
+      method: GET
+      path: github.com/IDENTIFIER
+      port: 443
+      protocol: https
+    detection:
+      match: { body: ["IDENTIFIER has \\d+ repositories"] }
+    condition: match

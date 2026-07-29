@@ -1,0 +1,60 @@
+version: 2
+project_name: saasquatch
+
+before:
+  hooks:
+    - go mod download
+    - go mod verify
+
+builds:
+  - main: ./main.go
+    binary: saasquatch
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+
+archives:
+  - files:
+      - src: rules/
+        dst: rules
+      - src: README.md
+      - src: LICENSE
+      - src: THIRD-PARTY-NOTICES.md
+
+dockers_v2:
+  - dockerfile: Dockerfile.goreleaser
+
+    platforms:
+      - linux/amd64
+      - linux/arm64
+  
+    extra_files:
+      - rules/
+
+    images:
+      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY_OWNER }}/{{ .ProjectName }}"
+    tags:
+      - "{{ .Tag }}"
+      - "latest"
+
+    labels:
+      org.opencontainers.image.created: "{{.Date}}"
+      org.opencontainers.image.name: "{{.ProjectName}}"
+      org.opencontainers.image.revision: "{{.FullCommit}}"
+      org.opencontainers.image.version: "{{.Version}}"
+      org.opencontainers.image.source: "{{.GitURL}}"
+
+    flags:
+      - "--pull"
+
+checksum:
+  name_template: 'checksums.txt'
+
+release:
+  draft: false

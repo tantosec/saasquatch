@@ -1,0 +1,15 @@
+version: 1
+rules:
+  - name: "Cloudflare Access - Subdomain"
+    service: "Cloudflare Access"
+    tags:
+      - "security"
+      - "idp"
+    known_good: "knifesec"
+    request:
+      method: "GET"
+      protocol: "https"
+      path: "IDENTIFIER.cloudflareaccess.com/apps/data"
+    detection:
+      match: { status: [401] }
+    condition: match

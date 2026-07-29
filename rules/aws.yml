@@ -1,0 +1,17 @@
+version: 1
+rules:
+  - name: AWS Account Alias
+    service: AWS
+    tags:
+      - cloud
+      - dev
+      - idp
+    known_good: jeffsys # where are these known goods come from?
+    request:
+      method: GET
+      path: IDENTIFIER.signin.aws.amazon.com/console
+      port: 443
+      protocol: https
+    detection:
+      match: { status: [302] }
+    condition: match

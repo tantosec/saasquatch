@@ -1,0 +1,14 @@
+version: 1
+rules:
+  - name: Zendesk - Subdomain
+    service: Zendesk
+    tags:
+      - support
+    known_good: vimeo
+    request:
+      method: GET
+      protocol: https
+      path: IDENTIFIER.Zendesk.com
+    detection:
+      match: { header: { Location: ["https://IDENTIFIER.zendesk.com"] } }
+    condition: match

@@ -1,0 +1,17 @@
+version: 1
+rules:
+  - name: Monday.com Subdomain
+    service: Monday.com
+    tags:
+      - project-management
+      - collaboration
+      - crm
+    known_good: graspable
+    request:
+      method: GET
+      path: IDENTIFIER.monday.com/users/sign_in
+      port: 443
+      protocol: https
+    detection:
+      slug_not_found: { header: { Location: ["https://monday.com/slug_not_found"] } }
+    condition: not slug_not_found

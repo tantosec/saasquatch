@@ -1,0 +1,52 @@
+# -----------------------------------------------------------------------------
+# SaaSquatch Rule Template
+#
+# Use this file as a starting point for creating new rules.
+#
+# INSTRUCTIONS:
+# 1. Copy this template to a new file (e.g., rules/new-service.yml).
+# 2. Replace all placeholder values (e.g., "SERVICE_NAME") with real data.
+# 3. Define one or more named leaves under 'detection', then combine them in 'condition'.
+# 4. Test your rule thoroughly using 'go run . --tags your-new-tag' in test mode.
+# -----------------------------------------------------------------------------
+
+version: 1
+rules:
+  - name: "[SERVICE_NAME] [BRIEF_DESCRIPTION_OF_CHECK]"
+    # Human-readable name for the rule. Be descriptive!
+    # Example: "GitHub Organization Check"
+
+    service: "[SERVICE_NAME]"
+    # The official name of the SaaS product. Example: "GitHub"
+
+    tags:
+      - "[PRIMARY_CATEGORY]" # e.g., "vcs", "crm", "project-management"
+      - "[SECONDARY_CATEGORY]" # e.g., "dev", "finance"
+
+    known_good: "[VALID_IDENTIFIER_EXAMPLE]"
+    # An identifier that is KNOWN TO BE VALID for this service. Critical for test mode.
+
+    request:
+      method: "GET" # Usually "GET", but could be "POST" for some login checks.
+      protocol: "https" # Almost always "https".
+      # The path MUST include the 'IDENTIFIER' placeholder.
+      path: "IDENTIFIER.service.com" # or "service.com/IDENTIFIER", etc.
+
+    # 'detection' is a map of named leaves. Each leaf sets exactly one of:
+    #   status: [ ... ]                    # status code is in the list
+    #   body:   [ "regex", ... ]           # any regex matches the body
+    #   header: { Name: [ "regex", ... ] } # any regex matches that header's value
+    # 'IDENTIFIER' inside a regex is replaced with the identifier under test.
+    # Optional per-leaf: caseSensitive: true  (regex defaults to case-insensitive)
+    detection:
+      ok: { status: [200] }
+      # body_signal: { body: ["Unique text for a valid page"] }
+      # redirect: { header: { Location: ["https://IDENTIFIER.service.com/login"] } }
+      # not_found: { body: ["Sorry, this page was not found"] }
+
+    # 'condition' combines the leaf names with and / or / not and parentheses.
+    # Examples:
+    #   ok
+    #   not not_found
+    #   (ok or body_signal) and not not_found
+    condition: ok

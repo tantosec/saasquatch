@@ -1,0 +1,39 @@
+version: 1
+rules:
+  - name: Okta - Subdomain
+    service: okta
+    tags:
+      - dev
+      - idp
+      - security
+    known_good: juilliard
+    request:
+      method: GET
+      path: IDENTIFIER.okta.com
+      port: 443
+      protocol: https
+    detection:
+      match:
+        header:
+          Location:
+            - "https://IDENTIFIER.okta.com/app/UserHome"
+            - "https://IDENTIFIER.okta.com/home/"
+    condition: match
+
+  - name: Okta - Legacy
+    service: okta
+    tags:
+      - dev
+      - idp
+      - security
+    known_good: fox
+    request:
+      method: GET
+      path: IDENTIFIER.okta.com
+      port: 443
+      protocol: https
+    detection:
+      match: { body: ["</style><title>.+ - Sign In</title>"] }
+    condition: match
+    captures:
+      org_name: { regex: '<title>(.+?) - Sign In</title>' }

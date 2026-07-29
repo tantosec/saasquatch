@@ -1,0 +1,17 @@
+version: 1
+rules:
+  - name: Bitbucket Basic
+    service: Bitbucket
+    tags:
+      - dev
+      - vcs
+    known_good: mailchimp
+    request:
+      method: GET
+      path: bitbucket.org/IDENTIFIER/profile/repositories
+      port: 443
+      protocol: https
+    detection:
+      redirected: { status: [302] }
+      to_workspace: { header: { Location: ["^/IDENTIFIER/workspace/repositories/?$"] } }
+    condition: redirected and to_workspace

@@ -1,0 +1,16 @@
+version: 1
+rules:
+  - name: Workday
+    service: Workday
+    tags:
+      - hr
+      - erp
+      - finance
+    known_good: advanceauto
+    request:
+      method: GET
+      protocol: https
+      path: wd5.myworkday.com/IDENTIFIER
+    detection:
+      match: { header: { Location: ["https://wd5.myworkday.com/IDENTIFIER"] } }
+    condition: match

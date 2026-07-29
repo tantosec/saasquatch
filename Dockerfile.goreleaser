@@ -1,0 +1,21 @@
+# Release-only Dockerfile, used by GoReleaser (see .goreleaser.yml).
+# It repackages the pre-compiled binaries GoReleaser produces, so the
+# published image and the release archives ship the exact same artifact.
+# It is NOT standalone-buildable: `docker build -f Dockerfile.goreleaser .` will
+# fail because no binary exists in the context. To build from source, use the
+# top-level ./Dockerfile instead.
+FROM alpine:3.24@sha256:f5064d3e5f88c467c714509f491853ab2d951932c5cad699c0cb969dcec6f3b4
+
+RUN addgroup -S saasquatchuser && adduser -S saasquatchuser -G saasquatchuser
+
+WORKDIR /app
+COPY rules/ ./rules/
+
+# This ARG is automatically set by GoReleaser (e.g., to "linux/amd64")
+ARG TARGETPLATFORM
+
+# Copy the pre-compiled binary that GoReleaser provides.
+COPY ${TARGETPLATFORM}/saasquatch .
+
+USER saasquatchuser
+ENTRYPOINT ["./saasquatch"]

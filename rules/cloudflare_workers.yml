@@ -1,0 +1,15 @@
+version: 1
+rules:
+  - name: "Cloudflare Workers - Subdomain"
+    service: "Cloudflare Workers"
+    tags:
+      - "dev"
+      - "cloud"
+    known_good: "hello-world.cobol"
+    request:
+      method: "GET"
+      protocol: "https"
+      path: "IDENTIFIER.workers.dev"
+    detection:
+      match: { status: [200, 301] }
+    condition: match

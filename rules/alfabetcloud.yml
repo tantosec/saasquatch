@@ -1,0 +1,29 @@
+version: 1
+rules:
+  - name: Alfabet - Main Environment
+    service: Alfabet by Software AG
+    tags:
+      - project-management
+    known_good: demo
+    request:
+      method: GET
+      path: IDENTIFIER.alfabetcloud.com
+      port: 443
+      protocol: https
+    detection:
+      app_csp: { header: { Content-Security-Policy: ["'self'"] } }
+    condition: app_csp
+
+  - name: Alfabet - Config/Testing Environment
+    service: Alfabet by Software AG
+    tags:
+      - project-management
+    known_good: ipsen
+    request:
+      method: GET
+      path: IDENTIFIER-conf.alfabetcloud.com
+      port: 443
+      protocol: https
+    detection:
+      app_csp: { header: { Content-Security-Policy: ["'self'"] } }
+    condition: app_csp

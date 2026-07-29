@@ -1,0 +1,33 @@
+version: 1
+rules:
+  - name: Gitlab Group
+    service: Gitlab
+    tags:
+      - dev
+      - vcs
+      - ci-cd
+    known_good: gitlab-org
+    request:
+      method: GET
+      path: gitlab.com/groups/IDENTIFIER/
+      port: 443
+      protocol: https
+    detection:
+      match: { status: [200] }
+    condition: match
+
+  - name: Gitlab Basic
+    service: Gitlab
+    tags:
+      - dev
+      - vcs
+      - ci-cd
+    known_good: frite
+    request:
+      method: GET
+      path: gitlab.com/IDENTIFIER
+      port: 443
+      protocol: https
+    detection:
+      match: { status: [200] }
+    condition: match

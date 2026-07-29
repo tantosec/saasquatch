@@ -1,0 +1,16 @@
+version: 1
+rules:
+  - name: Zoom Subdomain
+    service: zoom
+    tags:
+      - communication
+    known_good: stanford
+    request:
+      method: GET
+      path: IDENTIFIER.zoom.us
+      port: 443
+      protocol: https
+    detection:
+      zoom_header: { header: { x-zm-trackingid: ["."] } }
+      ok_status: { status: [200, 302] }
+    condition: zoom_header or ok_status

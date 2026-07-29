@@ -1,0 +1,30 @@
+version: 1
+rules:
+  - name: My Shopify - Subdomain
+    service: Shopify
+    tags:
+      - e-commerce
+    known_good: dragondawnstore
+    request:
+      method: GET
+      path: IDENTIFIER.myshopify.com
+      port: 443
+      protocol: https
+    detection:
+      match: { status: [200] }
+    condition: match
+
+  # Would be nice to have a better check
+  - name: My Shopify - Custom Domain
+    service: Shopify
+    tags:
+      - e-commerce
+    known_good: garagistic
+    request:
+      method: GET
+      path: IDENTIFIER.myshopify.com
+      port: 443
+      protocol: https
+    detection:
+      match: { header: { Location: ["https?://.*IDENTIFIER.*"] } }
+    condition: match
