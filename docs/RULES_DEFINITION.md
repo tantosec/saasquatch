@@ -3,7 +3,6 @@
 The core of `SaaSquatch` is its rule engine, which runs checks defined in simple YAML files. Each file starts with `version: 1` and a `rules:` list, so you can place multiple rule definitions in a single `.yml` file. Each rule is a self-contained test for a specific SaaS platform endpoint.
 
 Each rule contains the `IDENTIFIER` placeholder which will be tested when the rule is run. The `known_good` is an identifier known to exist. The placeholder token is configurable via `identifier-placeholder` in the config file (default `IDENTIFIER`), so rules written with the old placeholder token still work if you set `identifier-placeholder` to the old value.
-# Does this mean we are making our tool hit this by default every single time if abused?
 
 A rule's matching logic is a Sigma-style hybrid: a `detection` map of **named leaf matchers**, plus a `condition` expression string that combines them with `and` / `or` / `not` and parentheses. A leaf is a single `status`, `body`, or `header` check.
 
